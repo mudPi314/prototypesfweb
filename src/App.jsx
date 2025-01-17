@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import * as d3 from 'd3'
 import {
   Panel,
@@ -29,14 +29,16 @@ If you're the type of person who finds equal satisfaction in optimizing systems 
 This is an experiment in collaborative living where everyone levels up together. High agency, low drama/(high EQ), maximum potential for interesting objects to emerge.`,
     xLink: "https://twitter.com/prototypesf",
     specialLinkName: null,
-    specialLink: null
+    specialLink: null,
+    timestamp: "2025-01-15"
   },
   {
     name: "Embracing the Softness of Software",
     content: "Any sufficiently advanced technology is indistinguishable from magic. We're a community of creators who are passionate about building things that are useful, beautiful, and fun.",
     xLink: "https://twitter.com/prototypesf",
     specialLinkName: null,
-    specialLink: null
+    specialLink: null,
+    timestamp: "2025-01-15"
   }
 ]
 
@@ -46,16 +48,14 @@ const data = {
     { id: "Prototype", group: 3, type: "organization" },
     { id: "Luka Arnold", group: 2, type: "person" },
     { id: "Verda Korz", group: 2, type: "person" },
-    { id: "Anton Balitsky", group: 2, type: "person" },
+    { id: "Anton Balitskyi", group: 2, type: "person" },
     { id: "Jaivin Wylde", group: 2, type: "person" }
   ],
   links: [
     { source: "Luka Arnold", target: "Prototype" },
     { source: "Verda Korz", target: "Prototype" },
-    { source: "Anton Balitsky", target: "Prototype" },
+    { source: "Anton Balitskyi", target: "Prototype" },
     { source: "Jaivin Wylde", target: "Prototype" }
-    
-
   ]
 }
 
@@ -74,6 +74,21 @@ const calculateNodeSize = (nodeId) => {
 
 function App() {
   const svgRef = useRef(null)
+  const [isVertical, setIsVertical] = useState(window.innerWidth < 768)
+  // Add state for panel size
+  const [mobileSize, setMobileSize] = useState(window.innerWidth)
+
+  // Update resize listener to also track width for mobile
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth
+      setIsVertical(width < 768)
+      setMobileSize(width)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     if (!svgRef.current) return
@@ -102,8 +117,9 @@ function App() {
     pattern.append("path")
       .attr("d", "M 30 0 L 0 0 0 30")
       .style("fill", "none")
-      .style("stroke", "#f0f0f0")
+      .style("stroke", "#efefef")
       .style("stroke-width", "1")
+      .attr("vector-effect", "non-scaling-stroke")
 
     // Create a container group for zoom
     const g = svg.append("g")
@@ -253,50 +269,67 @@ function App() {
       height: '100vh', 
       display: 'flex', 
       background: '#fff',
-      overflow: 'hidden' // Prevent page scroll
+      overflow: 'hidden'
     }}>
-      <PanelGroup direction="horizontal" style={{ width: '100%', height: '100%' }}>
-        <Panel defaultSize={40} minSize={30}>
+      <PanelGroup 
+        direction={isVertical ? "vertical" : "horizontal"} 
+        style={{ width: '100%', height: '100%' }}
+      >
+        <Panel 
+          defaultSize={isVertical ? 70 : 40} 
+          minSize={isVertical ? 20 : 30}
+        >
           <div style={{
             height: '100%',
             background: '#fff',
             overflowY: 'auto', // Allow scroll only in blog posts
-            padding: '2rem',
+            padding: '0rem',
           }}>
             <div style={{ 
               borderBottom: '1px solid #ddd',
-              paddingBottom: '1.5rem',
-              marginBottom: '2rem',
+              paddingTop: '1.5rem',
+              paddingBottom: '1rem',
+              marginBottom: '1rem',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              minHeight: '120px'
+              minHeight: '100px'
             }}>
               <img 
                 src={logo}
                 alt="Prototype SF"
                 style={{
-                  width: '75%',
-                  minWidth: '240px',
-                  maxWidth: '420px',
+                  width: '260px',
                   margin: 0
                 }}
               />
             </div>
-
             {posts.map((post, index) => (
               <div key={index}>
-                <div style={{ marginBottom: '3rem' }}>
-                  <h2 style={{ 
-                    fontSize: '20px',
-                    fontWeight: '600',
-                    marginBottom: '0.75rem',
-                    color: '#000'
+                <div style={{ marginBottom: '3rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center',
+                    marginBottom: '0.75rem'
                   }}>
-                    {post.name}
-                  </h2>
+                    <h2 style={{ 
+                      fontSize: '20px',
+                      fontWeight: '600',
+                      color: '#000',
+                      margin: 0
+                    }}>
+                      {post.name}
+                    </h2>
+                    <span style={{
+                      fontSize: '14px',
+                      color: '#ccc'
+                    }}>
+                      {new Date(post.timestamp).toLocaleDateString()}
+                    </span>
+                  </div>
                   <p style={{ 
-                    fontSize: '14px',
+                    fontSize: '15.5px',
                     lineHeight: '1.4',
                     color: '#333',
                     marginBottom: '1rem',
@@ -332,25 +365,32 @@ function App() {
         </Panel>
         
         <PanelResizeHandle style={{
-          width: '1px',
+          width: isVertical ? '100%' : '1px',
+          height: isVertical ? '1px' : '100%',
           background: '#ddd',
-          cursor: 'col-resize'
+          cursor: isVertical ? 'row-resize' : 'col-resize'
         }} />
         
-        <Panel defaultSize={60} style={{ background: '#fff', minWidth: '400px',}}>
+        <Panel 
+          defaultSize={60} 
+          style={{ 
+            background: '#fff', 
+            minWidth: isVertical ? 'auto' : '400px'
+          }}
+        >
           <div style={{
-            padding: '2rem',
+            padding: '0.9rem',
             height: '100%',
             width: '100%',
             boxSizing: 'border-box',
             display: 'flex',
-            background: '#fff'
+            background: '#f5f5f5'
           }}>
             <div 
               style={{
                 flexGrow: 1,
                 position: 'relative',
-                borderRadius: '16px',
+                borderRadius: '8px',
                 overflow: 'hidden',
                 border: '1px solid #dfdfdf',
                 background: '#fff'
