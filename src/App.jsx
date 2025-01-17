@@ -6,6 +6,9 @@ import {
   PanelResizeHandle
 } from "react-resizable-panels"
 import logo from './assets/logo.svg'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThumbtack } from '@fortawesome/free-solid-svg-icons'
+import xLogo from './assets/x_logo.svg'
 
 // Sample blog posts data
 const posts = [
@@ -18,7 +21,6 @@ Prototype is engineers who appreciate aesthetics, designers who get excited abou
 We've put thought into creating comfortable, organic shared workspaces that facilitate both focused deep work and natural collaboration. The kind of environment where good ideas flow naturally.
 
 We're looking for housemates who:
-
 - Care deeply about both building and connecting
 - Bring their own unique perspectives to the collective
 - Actually ship things
@@ -28,17 +30,26 @@ If you're the type of person who finds equal satisfaction in optimizing systems 
 
 This is an experiment in collaborative living where everyone levels up together. High agency, low drama/(high EQ), maximum potential for interesting objects to emerge.`,
     xLink: "https://twitter.com/prototypesf",
-    specialLinkName: null,
-    specialLink: null,
-    timestamp: "2025-01-15"
+    specialLinks: [
+      { text: "Apply", url: "mailto:prototypesf@lukalot.com" }
+    ],
+    timestamp: "2025-01-15",
+    pinned: true
+  },
+  {
+    name: "Welcome to our new website",
+    content: "We're excited to announce the launch of our house and website! This site is a work in progress, and will some day be a place to explore our house and community. For now, it's a place to learn about us and get in touch.",
+    specialLinks: [],
+    timestamp: "2025-01-17",
+    pinned: false
   },
   {
     name: "Embracing the Softness of Software",
     content: "Any sufficiently advanced technology is indistinguishable from magic. We're a community of creators who are passionate about building things that are useful, beautiful, and fun.",
     xLink: "https://twitter.com/prototypesf",
-    specialLinkName: null,
-    specialLink: null,
-    timestamp: "2025-01-15"
+    specialLinks: [],
+    timestamp: "2025-01-15",
+    pinned: false
   }
 ]
 
@@ -304,63 +315,136 @@ function App() {
                 }}
               />
             </div>
-            {posts.map((post, index) => (
-              <div key={index}>
-                <div style={{ marginBottom: '3rem', paddingLeft: '2rem', paddingRight: '2rem' }}>
+            {[...posts]
+              .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0))
+              .map((post, index) => (
+                <div key={index}>
                   <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center',
-                    marginBottom: '0.75rem'
+                    paddingLeft: '1.8rem', 
+                    paddingRight: '2rem',
+                    marginTop: '1rem'
                   }}>
-                    <h2 style={{ 
-                      fontSize: '20px',
-                      fontWeight: '600',
-                      color: '#000',
+                    <div style={{ 
+                      display: 'flex', 
+                      justifyContent: 'space-between', 
+                      alignItems: 'center',
+                      marginBottom: '0.75rem'
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px'
+                      }}>
+                        <h2 style={{ 
+                          fontSize: '20px',
+                          fontWeight: '600',
+                          color: '#000',
+                          margin: 0
+                        }}>
+                          {post.name}
+                        </h2>
+                        {post.pinned && (
+                          <span style={{ 
+                            display: 'flex', 
+                            alignItems: 'center',
+                            color: '#000',
+                            transform: 'rotate(30deg)',
+                            marginLeft: '2px',
+                            paddingTop: '1px'
+                          }}>
+                            <FontAwesomeIcon icon={faThumbtack} size="sm" />
+                          </span>
+                        )}
+                      </div>
+                      <span style={{
+                        fontSize: '14px',
+                        color: '#ccc'
+                      }}>
+                        {new Date(post.timestamp).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <p style={{ 
+                      fontSize: '15.5px',
+                      lineHeight: '1.4',
+                      color: '#333',
+                      whiteSpace: 'pre-line',
                       margin: 0
                     }}>
-                      {post.name}
-                    </h2>
-                    <span style={{
-                      fontSize: '14px',
-                      color: '#ccc'
-                    }}>
-                      {new Date(post.timestamp).toLocaleDateString()}
-                    </span>
+                      {post.content}
+                    </p>
+                    {(post.xLink || post.specialLinks?.length > 0) && (
+                      <div style={{
+                        display: 'flex',
+                        gap: '8px',
+                        marginTop: '16px',
+                        flexWrap: 'wrap'
+                      }}>
+                        {post.xLink && (
+                          <a 
+                            href={post.xLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              width: '32px',
+                              height: '32px',
+                              borderRadius: '50%',
+                              border: '1px solid #ddd',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              color: '#000',
+                              textDecoration: 'none',
+                              cursor: 'pointer'
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f5f5f5'}
+                            onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+                          >
+                            <img 
+                              src={xLogo} 
+                              alt="X (Twitter)" 
+                              style={{
+                                width: '17px',
+                                height: '17px'
+                              }}
+                            />
+                          </a>
+                        )}
+                        {post.specialLinks?.map((link, i) => (
+                          <a
+                            key={i}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              padding: '6px 12px',
+                              border: '1px solid #ddd',
+                              borderRadius: '16px',
+                              background: 'none',
+                              fontSize: '14px',
+                              color: '#000',
+                              textDecoration: 'none',
+                              transition: 'background-color 0.2s',
+                              cursor: 'pointer'
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f5f5f5'}
+                            onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+                          >
+                            {link.text}
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <p style={{ 
-                    fontSize: '15.5px',
-                    lineHeight: '1.4',
-                    color: '#333',
-                    marginBottom: '1rem',
-                    whiteSpace: 'pre-line'
-                  }}>
-                    {post.content}
-                  </p>
-                  {post.specialLink && (
-                    <button style={{
-                      padding: '6px 12px',
-                      border: '1px solid #666',
-                      borderRadius: '4px',
-                      background: 'none',
-                      fontSize: '13px',
-                      cursor: 'pointer',
-                      color: '#666'
-                    }}>
-                      {post.specialLinkName}
-                    </button>
+                  {index < posts.length - 1 && (
+                    <div style={{ 
+                      width: '100%', 
+                      height: '1px', 
+                      background: '#ddd', 
+                      margin: '1.5rem 0 0 0'
+                    }} />
                   )}
                 </div>
-                {index < posts.length - 1 && (
-                  <div style={{ 
-                    width: '100%', 
-                    height: '1px', 
-                    background: '#ddd', 
-                    margin: '2rem 0' 
-                  }} />
-                )}
-              </div>
-            ))}
+              ))}
           </div>
         </Panel>
         
