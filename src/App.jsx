@@ -5,10 +5,11 @@ import {
   PanelGroup,
   PanelResizeHandle
 } from "react-resizable-panels"
-import logo from './assets/logo.svg'
+import logo from './assets/prototype_wordmark.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThumbtack } from '@fortawesome/free-solid-svg-icons'
 import xLogo from './assets/x_logo.svg'
+import prototypeLogoLight from './assets/prototype_logo_light.svg'
 
 // Sample blog posts data
 const posts = [
@@ -80,7 +81,9 @@ const calculateNodeSize = (nodeId) => {
   // Tiny base size (3), much larger multiplier (15)
   const size = 6 + Math.log2(connectionCount + 1) * 2
   
-  return size
+  // Find if this is an organization node
+  const node = data.nodes.find(n => n.id === nodeId)
+  return node?.type === "organization" ? size * 1.1 : size
 }
 
 function App() {
@@ -206,6 +209,34 @@ function App() {
       })
       .style("fill", d => d.type === "organization" ? "#ff83fa" : "#5179f1")
 
+    // Add logo images on organization nodes
+    const logos = g.append("g")
+      .selectAll("image")
+      .data(data.nodes.filter(d => d.type === "organization"))
+      .join("image")
+      .attr("href", prototypeLogoLight)
+      .attr("width", d => {
+        const baseSize = calculateNodeSize(d.id);
+        const size = baseSize * 2.5;
+        return size * 0.71; // Adjust size of logo relative to node
+      })
+      .attr("height", d => {
+        const baseSize = calculateNodeSize(d.id);
+        const size = baseSize * 2.5;
+        return size * 0.73;
+      })
+      .attr("x", d => {
+        const baseSize = calculateNodeSize(d.id);
+        const size = baseSize * 2.5;
+        return -(size * 0.7) / 2; // Center horizontally
+      })
+      .attr("y", d => {
+        const baseSize = calculateNodeSize(d.id);
+        const size = baseSize * 2.5;
+        return -(size * 0.7) / 2; // Center vertically
+      })
+      .style("pointer-events", "none")
+
     // Add smaller labels
     const labels = g.append("g")
       .selectAll("text")
@@ -217,7 +248,7 @@ function App() {
       .attr("dy", d => {
         if (d.type === "organization") {
           const baseSize = calculateNodeSize(d.id);
-          return baseSize * 2.5 * 0.23 + 20; // Adjust label position for rectangular shape
+          return baseSize * 2.5 * 0.23 + 22; // Adjust label position for rectangular shape
         }
         return Math.min(4 + calculateNodeSize(d.id) * 0.5, 8) + 12;
       })
@@ -242,6 +273,9 @@ function App() {
         .attr("y2", d => d.target.y)
 
       nodes
+        .attr("transform", d => `translate(${d.x},${d.y})`)
+
+      logos
         .attr("transform", d => `translate(${d.x},${d.y})`)
 
       labels
@@ -459,7 +493,7 @@ function App() {
           defaultSize={60} 
           style={{ 
             background: '#fff', 
-            minWidth: isVertical ? 'auto' : '400px'
+            minWidth: isVertical ? 'auto' : '500px'
           }}
         >
           <div style={{
