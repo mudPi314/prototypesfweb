@@ -64,7 +64,8 @@ const data = {
     { id: "Jaivin Wylde", group: 2, type: "person" },
     { id: "Sav Sidorov", group: 2, type: "person" },
     //{ id: "Celeste", group: 2, type: "person" },
-    { id: "Jared Mantell", group: 2, type: "person" }
+    { id: "Jared Mantell", group: 2, type: "person" },
+    { id: "Joe Krisciunas", group: 2, type: "person" }
   ],
   links: [
     { source: "Luka Arnold", target: "Prototype" },
@@ -73,7 +74,8 @@ const data = {
     { source: "Jaivin Wylde", target: "Prototype" },
     { source: "Sav Sidorov", target: "Prototype" },
     //{ source: "Celeste", target: "Prototype" },
-    { source: "Jared Mantell", target: "Prototype" }
+    { source: "Jared Mantell", target: "Prototype" },
+    { source: "Joe Krisciunas", target: "Prototype" }
   ]
 }
 
