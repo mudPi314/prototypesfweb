@@ -63,7 +63,7 @@ const data = {
     { id: "Anton Balitskyi", group: 2, type: "person" },
     { id: "Jaivin Wylde", group: 2, type: "person" },
     { id: "Sav Sidorov", group: 2, type: "person" },
-    //{ id: "Celeste", group: 2, type: "person" },
+    { id: "Celeste", group: 2, type: "person" },
     { id: "Jared Mantell", group: 2, type: "person" },
     { id: "Joe Krisciunas", group: 2, type: "person" }
   ],
@@ -73,7 +73,7 @@ const data = {
     { source: "Anton Balitskyi", target: "Prototype" },
     { source: "Jaivin Wylde", target: "Prototype" },
     { source: "Sav Sidorov", target: "Prototype" },
-    //{ source: "Celeste", target: "Prototype" },
+    { source: "Celeste", target: "Prototype" },
     { source: "Jared Mantell", target: "Prototype" },
     { source: "Joe Krisciunas", target: "Prototype" }
   ]
