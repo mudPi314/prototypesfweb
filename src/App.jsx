@@ -30,7 +30,7 @@ We're looking for housemates who:
 If you're the type of person who finds equal satisfaction in optimizing systems and debating modal realism at 2am, you might just fit right in.
 
 This is an experiment in collaborative living where everyone levels up together. High agency, low drama/(high EQ), maximum potential for interesting objects to emerge.`,
-    xLink: "https://twitter.com/prototypesf",
+    xLink: "https://x.com/prototypesf",
     specialLinks: [
       { text: "Apply", url: "mailto:prototypesf@lukalot.com" }
     ],
@@ -47,7 +47,7 @@ This is an experiment in collaborative living where everyone levels up together.
   {
     name: "Embracing the Softness of Software",
     content: "Any sufficiently advanced technology is indistinguishable from magic. We're a community of creators who are passionate about building things that are useful, beautiful, and fun.",
-    xLink: "https://twitter.com/prototypesf",
+    xLink: "https://x.com/prototypesf",
     specialLinks: [],
     timestamp: "2025-01-15",
     pinned: false
@@ -58,14 +58,14 @@ This is an experiment in collaborative living where everyone levels up together.
 const data = {
   nodes: [
     { id: "Prototype", group: 3, type: "organization" },
-    { id: "Luka Arnold", group: 2, type: "person" },
-    { id: "Verda Korz", group: 2, type: "person" },
-    { id: "Anton Balitskyi", group: 2, type: "person" },
-    { id: "Jaivin Wylde", group: 2, type: "person" },
-    { id: "Sav Sidorov", group: 2, type: "person" },
-    { id: "Celeste", group: 2, type: "person" },
-    { id: "Jared Mantell", group: 2, type: "person" },
-    { id: "Joe Krisciunas", group: 2, type: "person" }
+    { id: "Luka Arnold", group: 2, type: "person", xLink: "https://x.com/lukalot_" },
+    { id: "Verda Korz", group: 2, type: "person", xLink: "https://x.com/verdakorz" },
+    { id: "Anton Balitskyi", group: 2, type: "person", xLink: "https://x.com/antonbalitskyi" },
+    { id: "Jaivin Wylde", group: 2, type: "person", xLink: "https://x.com/jaivinwylde" },
+    { id: "Sav Sidorov", group: 2, type: "person", xLink: "https://x.com/savsidorov" },
+    { id: "Celeste", group: 2, type: "person", xLink: "https://x.com/parafactual" },
+    { id: "Jared Mantell", group: 2, type: "person", xLink: "https://x.com/0xredJ" },
+    { id: "Joe Krisciunas", group: 2, type: "person", xLink: "https://x.com/1bit2far" }
   ],
   links: [
     { source: "Luka Arnold", target: "Prototype" },
@@ -97,15 +97,12 @@ const calculateNodeSize = (nodeId) => {
 function App() {
   const svgRef = useRef(null)
   const [isVertical, setIsVertical] = useState(window.innerWidth < 768)
-  // Add state for panel size
-  const [mobileSize, setMobileSize] = useState(window.innerWidth)
 
   // Update resize listener to also track width for mobile
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth
       setIsVertical(width < 768)
-      setMobileSize(width)
     }
 
     window.addEventListener('resize', handleResize)
@@ -216,6 +213,28 @@ function App() {
         }
       })
       .style("fill", d => d.type === "organization" ? "#ff83fa" : "#5179f1")
+      .style("cursor", d => d.type === "person" ? "pointer" : "default")
+      .on("click", (event, d) => {
+        if (d.type === "person" && d.xLink) {
+          window.open(d.xLink, '_blank');
+        }
+      })
+      .on("mouseover", (event, d) => {
+        if (d.type === "person") {
+          d3.select(event.currentTarget)
+            .transition()
+            .duration(200)
+            .style("fill", "#3557c4");
+        }
+      })
+      .on("mouseout", (event, d) => {
+        if (d.type === "person") {
+          d3.select(event.currentTarget)
+            .transition()
+            .duration(200)
+            .style("fill", "#5179f1");
+        }
+      })
 
     // Add logo images on organization nodes
     const logos = g.append("g")
