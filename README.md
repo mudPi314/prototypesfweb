@@ -3,9 +3,13 @@
 </p>
 
 # PrototypeSF Website
+
 Welcome to the PrototypeSF website repository. This is the official website for the PrototypeSF house.
 
-### Run locally with:
+### Public URL
+- [prototypesf.org](https://prototypesf.org)
+
+### Run locally with
 ```
 npm install
 npm run dev
