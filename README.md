@@ -1,8 +1,16 @@
-# React + Vite
+<p align="center">
+  <img src="src/assets/prototype_wordmark.svg" alt="PrototypeSF Logo" width="300" style="margin-top: 20px;">
+</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# PrototypeSF Website
 
-Currently, two official plugins are available:
+Welcome to the PrototypeSF website repository. This is the official website for the PrototypeSF house.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Public URL
+- [prototypesf.org](https://prototypesf.org)
+
+### Run locally with
+```
+npm install
+npm run dev
+```
