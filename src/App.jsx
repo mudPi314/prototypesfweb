@@ -65,7 +65,7 @@ const data = {
     { id: "Sav Sidorov", group: 2, type: "person", xLink: "https://x.com/savsidorov" },
     { id: "Celeste", group: 2, type: "person", xLink: "https://x.com/parafactual" },
     { id: "Jared Mantell", group: 2, type: "person", xLink: "https://x.com/0xredJ" },
-    { id: "Joe Krisciunas", group: 2, type: "person", xLink: "https://x.com/1bit2far" }
+    { id: "Joe Krisciunas", group: 2, type: "person", xLink: "https://x.com/1bit2far" },
     { id: "Yoyo Yuan", group: 2, type: "person", xLink: "https://x.com/indiraschka" }
   ],
   links: [
@@ -76,7 +76,7 @@ const data = {
     { source: "Sav Sidorov", target: "Prototype" },
     { source: "Celeste", target: "Prototype" },
     { source: "Jared Mantell", target: "Prototype" },
-    { source: "Joe Krisciunas", target: "Prototype" }
+    { source: "Joe Krisciunas", target: "Prototype" },
     { source: "Yoyo Yuan", target: "Prototype" }
   ]
 }
