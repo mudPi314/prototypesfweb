@@ -13,6 +13,7 @@ import {
   faChevronUp 
 } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import apiConfig from './config';
 
 function Deface() {
   // Define the CSS variables that would have been in App.css
@@ -153,7 +154,7 @@ function Deface() {
       }, 800);
 
       // Make API request to backend
-      const response = await axios.post('http://localhost:3000/api/deface', formData, {
+      const response = await axios.post(`${apiConfig.apiBaseUrl}/api/deface`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -164,7 +165,7 @@ function Deface() {
       setProcessingProgress(100);
       
       // Set the output video URL with full backend path
-      setOutputVideo(`http://localhost:3000${response.data.processedVideoUrl}`);
+      setOutputVideo(`${apiConfig.apiBaseUrl}${response.data.processedVideoUrl}`);
     } catch (err) {
       const errorDetails = err.response?.data?.error || '';
       const commandDetails = err.response?.data?.command || '';
