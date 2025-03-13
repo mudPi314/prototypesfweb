@@ -28,6 +28,16 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
+// Health check endpoint for testing connectivity
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'Server is running',
+    environment: process.env.NODE_ENV || 'development',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Create uploads and processed directories if they don't exist
 const uploadsDir = path.join(__dirname, 'uploads');
 const processedDir = path.join(__dirname, 'public', 'processed');
