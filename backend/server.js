@@ -16,7 +16,9 @@ const port = process.env.PORT || 3000;
 
 // CORS configuration
 const corsOptions = {
-  origin: ['http://localhost:5173', 'https://www.prototypesf.org'],
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://www.prototypesf.org'] 
+    : ['http://localhost:5173', 'https://www.prototypesf.org', '*'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
@@ -218,6 +220,8 @@ app.post('/api/deface', upload.single('video'), (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running at http://0.0.0.0:${port}`);
+  console.log('To access from another device, use your machine\'s IP address:');
+  console.log(`http://<your-ip-address>:${port}`);
 });
