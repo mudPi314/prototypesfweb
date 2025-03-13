@@ -12,12 +12,31 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
+
+// CORS configuration
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://www.prototypesf.org'] 
+    : ['http://localhost:5173', 'https://www.prototypesf.org', '*'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
 
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.static('public'));
+
+// Health check endpoint for testing connectivity
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'Server is running',
+    environment: process.env.NODE_ENV || 'development',
+    timestamp: new Date().toISOString()
+  });
+});
 
 // Create uploads and processed directories if they don't exist
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -211,6 +230,8 @@ app.post('/api/deface', upload.single('video'), (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running at http://0.0.0.0:${port}`);
+  console.log('To access from another device, use your machine\'s IP address:');
+  console.log(`http://<your-ip-address>:${port}`);
 });

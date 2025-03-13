@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "prod": "echo 'Your IP address is:' && (command -v ipconfig >/dev/null && ipconfig getifaddr en0 || hostname -I) && NODE_ENV=production node server.js"
   },
   "dependencies": {
     "body-parser": "^1.20.3",
