@@ -58,7 +58,7 @@ This is an experiment in collaborative living where everyone levels up together.
 const data = {
   nodes: [
     { id: "Prototype", group: 3, type: "organization" },
-    { id: "Luka Arnold", group: 2, type: "person", xLink: "https://x.com/lukalot_" },
+    { id: "Luka Arnold", group: 2, type: "person", xLink: "https://x.com/lukalotl" },
     { id: "Verda Korz", group: 2, type: "person", xLink: "https://x.com/verdakorz" },
     { id: "Anton Balitskyi", group: 2, type: "person", xLink: "https://x.com/antonbalitskyi" },
     { id: "Jaivin Wylde", group: 2, type: "person", xLink: "https://x.com/jaivinwylde" },
